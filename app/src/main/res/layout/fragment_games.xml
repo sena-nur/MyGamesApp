@@ -1,11 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragments.GamesFragment">
+    <RelativeLayout
+        android:id="@+id/topLayout"
+        android:layout_marginTop="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="122dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="9dp"
+            android:layout_alignParentBottom="true"
+            android:text="@string/games_dest"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"></TextView>
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="vertical"
+        android:layout_below="@id/topLayout"
+        app:layout_constraintVertical_bias="0.022"
+        tools:context=".MainActivity">
+
+        <android.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="346dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/searchview_background"
+            android:iconifiedByDefault="false"
+            android:queryBackground="@android:color/transparent"
+            android:queryHint="Search for the games">
+
+
+        </android.widget.SearchView>
+
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/games_recyclerview"
+        android:layout_below="@id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-</FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/loadingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="#85000000"
+        android:visibility="gone">
+        <ProgressBar
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:translationZ="90dp"
+            android:id="@+id/progressBar"
+            android:visibility="visible"/>
+    </FrameLayout>
+
+</RelativeLayout>

@@ -4,9 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragments.GamesFragment">
-    <TextView
+    <RelativeLayout
+        android:id="@+id/topLayout"
+        android:layout_marginTop="0dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/favourites_dest"
-        android:layout_gravity="center"></TextView>
+        android:layout_height="122dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="9dp"
+            android:layout_alignParentBottom="true"
+            android:text="@string/favourites_dest"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"></TextView>
+    </RelativeLayout>
 </FrameLayout>

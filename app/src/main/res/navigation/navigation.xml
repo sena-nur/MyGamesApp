@@ -10,8 +10,9 @@
         android:name="com.sena.mygamesapp.Fragments.GamesFragment"
         android:label="fragment_games"
         tools:layout="@layout/fragment_games" >
+
         <action
-            android:id="@+id/action_gamesFragment_to_favouritesFragment"
+            android:id="@+id/action_games_dest_to_favourites_dest"
             app:destination="@id/favourites_dest" />
     </fragment>
     <fragment
@@ -19,8 +20,9 @@
         android:name="com.sena.mygamesapp.Fragments.FavouritesFragment"
         android:label="fragment_favourites"
         tools:layout="@layout/fragment_favourites" >
+
         <action
-            android:id="@+id/action_favouritesFragment_to_gamesFragment"
+            android:id="@+id/action_favourites_dest_to_games_dest"
             app:destination="@id/games_dest" />
     </fragment>
 </navigation>
