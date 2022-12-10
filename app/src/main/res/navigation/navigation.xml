@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_games_dest_to_favourites_dest"
             app:destination="@id/favourites_dest" />
+        <action
+            android:id="@+id/action_games_dest_to_gameDetailFragment"
+            app:destination="@id/gameDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/favourites_dest"
@@ -25,4 +28,8 @@
             android:id="@+id/action_favourites_dest_to_games_dest"
             app:destination="@id/games_dest" />
     </fragment>
+    <fragment
+        android:id="@+id/gameDetailFragment"
+        android:name="com.sena.mygamesapp.Fragments.GameDetailFragment"
+        android:label="GameDetailFragment" />
 </navigation>

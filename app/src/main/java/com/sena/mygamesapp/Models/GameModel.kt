@@ -8,4 +8,5 @@ data class GameModel(
     @SerializedName("name") val name: String,
     @SerializedName("background_image") val backgroundImage: String,
     @SerializedName("metacritic") val metacritic: Int,
+    @SerializedName("genres") val genres: ArrayList<GenreModel>,
 )

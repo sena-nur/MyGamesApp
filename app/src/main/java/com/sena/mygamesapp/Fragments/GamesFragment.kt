@@ -7,14 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sena.mygamesapp.Adapters.GamesAdapter
 import com.sena.mygamesapp.AppConstants.Constants
 import com.sena.mygamesapp.Interfaces.ApiClient
 import com.sena.mygamesapp.Interfaces.ApiInterface
+import com.sena.mygamesapp.Interfaces.GameClickListener
 import com.sena.mygamesapp.Models.GameModel
 import com.sena.mygamesapp.Models.ResponseModel
 import com.sena.mygamesapp.R
@@ -23,7 +26,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class GamesFragment : Fragment(R.layout.fragment_games) {
+class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
     private var _binding: FragmentGamesBinding? = null // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
     var currentPage = 1;
@@ -110,7 +113,7 @@ class GamesFragment : Fragment(R.layout.fragment_games) {
                             mutableAllGameList.clear()
                             //response body null değilse mutableallgameliste tüm resultları ekle
                             response.body()?.let { mutableAllGameList.addAll(it.results) }
-                            adapter= GamesAdapter(context, mutableAllGameList)
+                            adapter= GamesAdapter(context, mutableAllGameList,this@GamesFragment)
                             // sayfa 1 değilse daha önce oyunları içeren listeyi temizlemiyoruz
                             // çünkü dah aönceki verilerin altına bu yeni gelenleri ekledik
                             //alt alta binen veriler toplandı
@@ -135,4 +138,11 @@ class GamesFragment : Fragment(R.layout.fragment_games) {
         })
     }
 
+    override fun onGameClickListener(gameId : Int) {
+        Toast.makeText(context,"DENEME",Toast.LENGTH_LONG).show()
+        val bundle = Bundle()
+        bundle.putInt("gameId",gameId)
+        view?.findNavController()?.navigate(R.id.action_games_dest_to_gameDetailFragment,bundle)
+
+    }
 }

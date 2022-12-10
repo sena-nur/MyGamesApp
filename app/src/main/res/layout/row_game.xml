@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="136dp">
     <LinearLayout
+        android:id="@+id/game_row"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="16dp"
@@ -42,7 +43,7 @@
                     android:id="@+id/textViewMetaCritic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_above="@id/textViewGameType"
+                    android:layout_above="@id/textViewGenres"
                     android:text="metacritic:"
                     android:textStyle="bold"></TextView>
                 <TextView
@@ -50,13 +51,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/textViewMetaCritic"
-                    android:layout_above="@id/textViewGameType"
+                    android:layout_above="@id/textViewGenres"
                     android:layout_marginLeft="5dp"
                     android:text="95"
                     android:textColor="@color/red"
                     android:textStyle="bold"></TextView>
                 <TextView
-                    android:id="@+id/textViewGameType"
+                    android:id="@+id/textViewGenres"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
