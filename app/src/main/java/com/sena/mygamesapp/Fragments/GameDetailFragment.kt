@@ -27,6 +27,7 @@ import retrofit2.Response
 class GameDetailFragment : Fragment(R.layout.fragment_game_detail) {
     private var _binding: FragmentGameDetailBinding? = null
     private val binding get() = _binding!!
+    private var clickNo = 0;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +39,10 @@ class GameDetailFragment : Fragment(R.layout.fragment_game_detail) {
         val gameId = arguments?.getInt("gameId")
         gameId?.let { getGameDetail(it) }
         binding.gameDesc.setOnClickListener {
-            binding.gameDesc.maxLines = Int.MAX_VALUE
+            if(++clickNo % 2 == 1)
+                binding.gameDesc.maxLines = Int.MAX_VALUE
+            else
+                binding.gameDesc.maxLines = 4
         }
     }
 
