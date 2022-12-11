@@ -19,35 +19,45 @@
                     android:id="@+id/topWhite"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"
                     android:weightSum="2">
                     <TextView
+                        android:id="@+id/backToGames"
                         android:layout_width="match_parent"
                         android:layout_height="44dp"
                         android:layout_weight="1"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginLeft="8.5dp"
                         android:gravity="center_vertical"
-                        android:text="Games"
+                        android:drawableLeft="@drawable/arrow"
+                        android:fontFamily="@font/sfprotext"
+                        android:text=" Games"
                         android:textColor="@color/blue"
                         android:textStyle="bold"
-                        android:textSize="15dp"></TextView>
+                        android:textSize="17dp"
+                        android:lineHeight="22dp"></TextView>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="44dp"
                         android:layout_marginRight="16dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical|right"
+                        android:fontFamily="@font/sfprotext"
                         android:text="Favourite"
                         android:textColor="@color/blue"
                         android:textStyle="bold"
-                        android:textSize="15dp"></TextView>
+                        android:textSize="17dp"
+                        android:lineHeight="22dp"></TextView>
                 </LinearLayout>
                 <ImageView
                     android:id="@+id/gameImage"
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="291dp"
+                    android:scaleType="fitXY"
                     android:layout_below="@id/topWhite"></ImageView>
                 <TextView
+                    android:id="@+id/gameName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
@@ -55,6 +65,8 @@
                     android:layout_marginRight="16dp"
                     android:gravity="center"
                     android:textSize="36dp"
+                    android:fontFamily="@font/sfprodisplay"
+                    android:lineHeight="40dp"
                     android:textColor="@color/white"
                     android:text="Grand Theft Auto San Andreas"
                     android:layout_alignParentBottom="true"></TextView>
@@ -68,9 +80,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Game Description"
+                    android:fontFamily="@font/sfprotext"
+                    android:textColor="@color/gray"
                     android:textSize="17dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"></TextView>
+                    android:textStyle="bold"></TextView>
                 <TextView
                     android:id="@+id/gameDesc"
                     android:layout_marginTop="8dp"
@@ -82,19 +95,56 @@
                     android:ellipsize="end"
                     android:textColor="@color/black"></TextView>
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@android:color/darker_gray"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_height="54dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Game Description"
+                    android:text="Visit reddit"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/sfprotext"
                     android:textSize="17dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"></TextView>
+                    android:textColor="@color/gray"
+                    android:textStyle="bold"></TextView>
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@android:color/darker_gray"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Visit website"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/sfprotext"
+                    android:textSize="17dp"
+                    android:textColor="@color/gray"
+                    android:textStyle="bold"></TextView>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@android:color/darker_gray"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

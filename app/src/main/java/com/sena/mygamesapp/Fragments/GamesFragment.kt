@@ -29,24 +29,25 @@ import retrofit2.Response
 class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
     private var _binding: FragmentGamesBinding? = null // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
-    var currentPage = 1;
+    var currentPage = 1
     val mutableAllGameList = mutableListOf<GameModel>()
     var searchText = ""
+    var adapter: GamesAdapter? = null
 
     //To set up an instance of the binding class for use with an activity, perform the following steps in the activity's onCreate() method
     //called to do initial creation of the fragment.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) //onCreateView() method is called and assuming that we provided our Fragment with a non-null view(via view binding) the view returned from this method will be the one shown to the user.
     {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentGamesBinding.bind(view) //instance of the binding class for the fragment to use.
+        _binding = FragmentGamesBinding.bind(view)
+        //instance of the binding class for the fragment to use.
         binding.gamesRecyclerview.layoutManager = LinearLayoutManager(context) // set a LinearLayoutManager to handle Android //RecyclerView behavior
         //Başta liste hiç sürüklenmediği için state null olarak başlatıyoruz
-        getGameList(10,1,null,searchText);
+        getGameList(10,1,null,searchText)
         binding.gamesRecyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener()
         //Setting the games list in the recycler view as a dynamic structure that can scroll
         //Sayfanın en altına gidilip gidilmediğini kontrol eder en alta gidildiyse page++ olur ve method diğer sayfa için çağrılır
@@ -78,7 +79,14 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
             override fun onQueryTextSubmit(query: String): Boolean //the query text that is to be submitted
             {
                 currentPage = 1
-                getGameList(Constants.PAGE_SIZE,currentPage,null,query)
+                if(query.length > 0 && query.length < 4){
+                    mutableAllGameList.clear()
+                    adapter?.notifyDataSetChanged()
+                    binding.noSearchLayout.isVisible = true
+                } else{
+                    binding.noSearchLayout.isVisible = false
+                    getGameList(Constants.PAGE_SIZE,currentPage,null,query)
+                }
                 return false //false to let the SearchView perform the default action
             }
 

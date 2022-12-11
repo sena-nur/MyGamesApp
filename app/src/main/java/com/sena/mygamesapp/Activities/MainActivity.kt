@@ -15,14 +15,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val navController = findNavController(R.id.nav_host_fragment)
+        //Defining a navController to be able to use the navigation component
         setupBottomNavMenu(navController)
     }
     private fun setupBottomNavMenu(navController: NavController) {
+        //Setting BottomNvigationView
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNav?.setupWithNavController(navController)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        //set the page transition of the selected menu item
         return item.onNavDestinationSelected(findNavController(R.id.nav_host_fragment)) || super.onOptionsItemSelected(item)
     }
 }
+

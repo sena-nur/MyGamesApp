@@ -6,14 +6,7 @@
         android:radius="10dp"
         />
 
-    <stroke
-        android:color="#1F8E8E93"
-        android:width="4dp"
 
-        >
-
-
-    </stroke>
 
 
 </shape>

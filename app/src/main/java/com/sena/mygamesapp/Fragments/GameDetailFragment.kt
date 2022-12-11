@@ -44,6 +44,9 @@ class GameDetailFragment : Fragment(R.layout.fragment_game_detail) {
             else
                 binding.gameDesc.maxLines = 4
         }
+        binding.backToGames.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
     }
 
     override fun onDestroyView() {
@@ -66,6 +69,7 @@ class GameDetailFragment : Fragment(R.layout.fragment_game_detail) {
                             .load(gameDetailResponse.background_image)
                             .into(binding.gameImage)
                     }
+                    binding.gameName.setText(gameDetailResponse.name)
                 }
             }
 

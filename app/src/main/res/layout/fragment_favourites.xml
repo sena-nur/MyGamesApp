@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,4 +21,20 @@
             android:textStyle="bold"
             android:textColor="@color/black"></TextView>
     </RelativeLayout>
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
+        android:layout_below="@id/topLayout">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sfprodisplay"
+            android:text="There is no favourites found"
+            android:layout_marginTop="36dp"
+            android:gravity="center"
+            android:textSize="18dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"></TextView>
+    </LinearLayout>
+</RelativeLayout>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.sena.mygamesapp.Interfaces.GameClickListener
 import com.sena.mygamesapp.Models.GameModel
 import com.sena.mygamesapp.databinding.RowGameBinding
@@ -20,6 +21,7 @@ class GamesAdapter(var context: Context, var gameList: MutableList<GameModel>,pr
 
     override fun onBindViewHolder(holder: GamesViewHolder, position: Int) //Method to bind data returned from onCreateViewHolder() method
      {
+        //selecting the game in the relevant position from the list and assigning it to the variable
         val game = gameList.get(position)
         holder.viewBinding.textViewGameName.setText(game.name)
         holder.viewBinding.textViewMetaCriticPoint.setText(game.metacritic.toString())
@@ -30,6 +32,7 @@ class GamesAdapter(var context: Context, var gameList: MutableList<GameModel>,pr
         }
          val genreList = game.genres
          var genreListTxt = ""
+         //Assign the elements in the genre list to a string variable, separated by commas
          for(i in 0 until genreList.size){
              if(i.equals(0))
                  genreListTxt = genreListTxt + genreList.get(i).name
@@ -38,6 +41,7 @@ class GamesAdapter(var context: Context, var gameList: MutableList<GameModel>,pr
              }
          }
          holder.viewBinding.textViewGenres.setText(genreListTxt)
+         //Redirecting the clicked element in the game list to the detail page by id
          holder.viewBinding.gameRow.setOnClickListener{
              gameClickListener.onGameClickListener(game.id)
          }

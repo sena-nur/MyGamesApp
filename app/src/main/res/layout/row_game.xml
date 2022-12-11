@@ -17,8 +17,9 @@
             android:layout_weight="11">
             <ImageView
                 android:id="@+id/imageViewGame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="120dp"
+                android:layout_height="104dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/ic_launcher_background">
             </ImageView>
         </LinearLayout>
@@ -30,13 +31,19 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <TextView
                     android:id="@+id/textViewGameName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_above="@id/textViewMetaCritic"
                     android:layout_alignParentTop="true"
+                    android:fontFamily="@font/sfprodisplay"
+                    android:lineHeight="25dp"
+                    android:letterSpacing="0.038"
                     android:text="Grand Theft Auto San Andreas"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/black"
                     android:textSize="20dp"
                     android:textStyle="bold"></TextView>
                 <TextView
@@ -45,6 +52,12 @@
                     android:layout_height="wrap_content"
                     android:layout_above="@id/textViewGenres"
                     android:text="metacritic:"
+                    android:layout_marginBottom="8dp"
+                    android:letterSpacing="0.038"
+                    android:textSize="14dp"
+                    android:lineHeight="25dp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/sfprodisplay"
                     android:textStyle="bold"></TextView>
                 <TextView
                     android:id="@+id/textViewMetaCriticPoint"
@@ -53,7 +66,12 @@
                     android:layout_toRightOf="@id/textViewMetaCritic"
                     android:layout_above="@id/textViewGenres"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginBottom="8dp"
+                    android:letterSpacing="0.038"
+                    android:lineHeight="25dp"
+                    android:fontFamily="@font/sfprodisplay"
                     android:text="95"
+                    android:textSize="18dp"
                     android:textColor="@color/red"
                     android:textStyle="bold"></TextView>
                 <TextView
@@ -61,6 +79,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
+                    android:fontFamily="@font/sfprotext"
+                    android:lineHeight="25dp"
+                    android:textSize="14dp"
                     android:text="Action, puzzle"></TextView>
             </RelativeLayout>
         </LinearLayout>
