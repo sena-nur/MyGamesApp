@@ -3,11 +3,8 @@ package com.sena.mygamesapp.Fragments
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -15,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sena.mygamesapp.Adapters.GamesAdapter
 import com.sena.mygamesapp.AppConstants.Constants
-import com.sena.mygamesapp.Interfaces.ApiClient
+import com.sena.mygamesapp.Retrofit.ApiClient
 import com.sena.mygamesapp.Interfaces.ApiInterface
 import com.sena.mygamesapp.Interfaces.GameClickListener
 import com.sena.mygamesapp.Models.GameModel
@@ -40,18 +37,21 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) //onCreateView() method is called and assuming that we provided our Fragment with a non-null view(via view binding) the view returned from this method will be the one shown to the user.
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
+        //onCreateView() method is called and assuming that we provided our Fragment with a non-null
+        // view(via view binding) the view returned from this method will be the one shown to the user.
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentGamesBinding.bind(view)
         //instance of the binding class for the fragment to use.
         binding.gamesRecyclerview.layoutManager = LinearLayoutManager(context) // set a LinearLayoutManager to handle Android //RecyclerView behavior
-        //Başta liste hiç sürüklenmediği için state null olarak başlatıyoruz
+        //Initially state is initialized to null because the list is never dragged
         getGameList(10,1,null,searchText)
         binding.gamesRecyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener()
         //Setting the games list in the recycler view as a dynamic structure that can scroll
-        //Sayfanın en altına gidilip gidilmediğini kontrol eder en alta gidildiyse page++ olur ve method diğer sayfa için çağrılır
         {
+            //It checks if the page has gone to the bottom, if it is to the bottom,
+            // it becomes page++ and the method is called for the other page
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)){
@@ -63,13 +63,11 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
 
         })
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener
-
         {
-
             override fun onQueryTextChange(newText: String): Boolean //Called when the query text is changed by the user.
             {
                 if(newText.equals("")){
-                    this.onQueryTextSubmit("");
+                    this.onQueryTextSubmit("") //pull list unfiltered if search string is empty
                 } else if(newText.length>3){
                     this.onQueryTextSubmit(newText) //if text length more than 3 it should search for that string
                 }
@@ -78,12 +76,16 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
 
             override fun onQueryTextSubmit(query: String): Boolean //the query text that is to be submitted
             {
+                //If the search string length is in the range of 0-4, the game list is cleared,
+                // the adapter is updated, and the text indicating that there is no game searched is displayed on the screen.
                 currentPage = 1
                 if(query.length > 0 && query.length < 4){
                     mutableAllGameList.clear()
                     adapter?.notifyDataSetChanged()
                     binding.noSearchLayout.isVisible = true
                 } else{
+                    //When the length of the search string is 0 or greater than 3,
+                    // the game not searched text will be invisible and the getGameList method will be called.
                     binding.noSearchLayout.isVisible = false
                     getGameList(Constants.PAGE_SIZE,currentPage,null,query)
                 }
@@ -92,47 +94,47 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
 
         })
     }
-
     override fun onDestroyView() {
         super.onDestroyView() //This method will get called when the host Activity is in the DESTROYED state
         // clean up any references to the binding class instance in the fragment's
-        _binding = null //_binding = null, which is  manually setting View Binding object to null to prevent memory leaks and to ensure that each call of onCreateView() returns a fresh and newly updated View.
+        _binding = null //_binding = null, which is  manually setting View Binding object to null to prevent memory
+        // leaks and to ensure that each call of onCreateView() returns a fresh and newly updated View.
     }
     fun getGameList(pageSize:Int, pageIndex:Int, state: Parcelable?, searchText:String){
-        //oyunları çekmet methodu çağrırıldığı an ekrana yükleniyor diyaloğunu getir
-        //bu diyalog ekrandayken başka bir şeye tıklatmıyor
+        //Get the loading dialog when the getGameList method is called
+        //this dialog doesn't click anything else on the screen
         binding.loadingLayout.isVisible = true;
-        //ApiInterface classı içinde tanımladığım methodları kullanabilmek için ApiClient
-        //içerisindeki buildService methoduna ApiInterface classımı yolluyorum
+        //ApiClient to use the methods defined in the ApiInterface class
+        //ApiInterface class is sent to the buildService method in it
         val serviceGenerator = ApiClient.buildService(ApiInterface::class.java)
         val call = serviceGenerator.getGamesList(pageSize,pageIndex,searchText,Constants.API_KEY)
         call.enqueue(object: Callback<ResponseModel> {
             override fun onResponse(call: Call<ResponseModel>, response: Response<ResponseModel>) {
                 if(response.isSuccessful) {
                     binding.loadingLayout.isVisible = false;
-                    //recyclerview içerisine başarılı dönen response verilerini yazdırma
+                    //printing the successful response data into the recyclerview
                     binding.gamesRecyclerview.apply {
-                        //layout manager ekrana verileri listeli gösterebilmek için gereklidir
+                        //The layout manager is required to display the data listed on the screen.
                         layoutManager= LinearLayoutManager(context)
                         binding.gamesRecyclerview.layoutManager = LinearLayoutManager(context)
-                        //ilk sayfa için listeyi temizliyoruz çünkü önceki sayfası yok
-                        // gelen 10 veriyi direkt olarak ekleyip gösteriyoruz
+                        //the list is cleared for the first page because it has no previous page
                         if(pageIndex.equals(1)){
                             mutableAllGameList.clear()
-                            //response body null değilse mutableallgameliste tüm resultları ekle
+                            //If response body is not null add all results in mutableAllGamelist
                             response.body()?.let { mutableAllGameList.addAll(it.results) }
                             adapter= GamesAdapter(context, mutableAllGameList,this@GamesFragment)
-                            // sayfa 1 değilse daha önce oyunları içeren listeyi temizlemiyoruz
-                            // çünkü dah aönceki verilerin altına bu yeni gelenleri ekledik
-                            //alt alta binen veriler toplandı
+
                         } else if(state != null){
+                            //If the page is not 1, the list containing the previous games is not clear.
+                            // because we added this newcomer below the previous data
+                            //collect overlapping data
                             response.body()?.let { mutableAllGameList.addAll(it.results) }
                             adapter?.notifyDataSetChanged()
-                            // listenin tam olarak neresinde olduğumuzu alıp kaldığımız yerden devam etmemizi sağladı
+                            //allowed us to pick up exactly where we were on the list and pick up where we left off
                             binding.gamesRecyclerview.getLayoutManager()?.onRestoreInstanceState(state);
                         } else{
                             response.body()?.let { mutableAllGameList.addAll(it.results) }
-                            adapter?.notifyDataSetChanged()
+                            adapter?.notifyDataSetChanged() //If state is null, reload the list and warn the adapter
                         }
                     }
                 }
@@ -147,7 +149,7 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
     }
 
     override fun onGameClickListener(gameId : Int) {
-        Toast.makeText(context,"DENEME",Toast.LENGTH_LONG).show()
+        //taking the id of the clicked game in the list and directing it to the detail fragment
         val bundle = Bundle()
         bundle.putInt("gameId",gameId)
         view?.findNavController()?.navigate(R.id.action_games_dest_to_gameDetailFragment,bundle)

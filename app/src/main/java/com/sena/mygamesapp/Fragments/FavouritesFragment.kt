@@ -22,10 +22,6 @@ class FavouritesFragment : Fragment(R.layout.fragment_favourites) {
         _binding = FragmentFavouritesBinding.bind(view)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_favourites, container, false)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

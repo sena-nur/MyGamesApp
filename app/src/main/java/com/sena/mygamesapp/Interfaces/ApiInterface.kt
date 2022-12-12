@@ -8,6 +8,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiInterface  {
+    //Create ApiInterface which contain the api methods. Firstly, enter the method types with method names.
+    //After, set query and path parameters for methods.
+    //Call methods with our created Response models
     @GET("games")
     fun getGamesList(@Query("page_size") page_size: Int,
                      @Query("page") page: Int,
@@ -18,3 +21,6 @@ interface ApiInterface  {
     fun getGameDetail(@Path("id") id: Int,
                       @Query("key") key: String): Call<GameDetailModel>
 }
+
+
+

@@ -10,3 +10,4 @@ data class GameModel(
     @SerializedName("metacritic") val metacritic: Int,
     @SerializedName("genres") val genres: ArrayList<GenreModel>,
 )
+
