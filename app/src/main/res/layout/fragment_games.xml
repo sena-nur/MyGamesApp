@@ -62,7 +62,8 @@
             android:backgroundTint="#1F8E8E93"
             android:iconifiedByDefault="false"
             android:queryHint="Search for the games"
-            android:searchIcon="@drawable/search_icon">
+            android:searchIcon="@drawable/search_icon"
+            android:queryBackground="@null">
         </android.widget.SearchView>
         <View
             android:layout_width="match_parent"

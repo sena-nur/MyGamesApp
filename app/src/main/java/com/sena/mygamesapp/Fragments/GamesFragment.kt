@@ -39,14 +39,14 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
-        //onCreateView() method is called and assuming that we provided our Fragment with a non-null
+        //onViewCreated() method is called and assuming that we provided our Fragment with a non-null
         // view(via view binding) the view returned from this method will be the one shown to the user.
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentGamesBinding.bind(view)
         //instance of the binding class for the fragment to use.
         binding.gamesRecyclerview.layoutManager = LinearLayoutManager(context) // set a LinearLayoutManager to handle Android //RecyclerView behavior
         //Initially state is initialized to null because the list is never dragged
-        getGameList(10,1,null,searchText)
+        getGameList(10,1,null,searchText) //getGameList() called
         binding.gamesRecyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener()
         //Setting the games list in the recycler view as a dynamic structure that can scroll
         {
@@ -102,11 +102,12 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
     }
     fun getGameList(pageSize:Int, pageIndex:Int, state: Parcelable?, searchText:String){
         //Get the loading dialog when the getGameList method is called
-        //this dialog doesn't click anything else on the screen
+        //this dialog does not allow clicking anything else on the screen.
         binding.loadingLayout.isVisible = true;
         //ApiClient to use the methods defined in the ApiInterface class
         //ApiInterface class is sent to the buildService method in it
         val serviceGenerator = ApiClient.buildService(ApiInterface::class.java)
+        // To pull game list, call api with service generator
         val call = serviceGenerator.getGamesList(pageSize,pageIndex,searchText,Constants.API_KEY)
         call.enqueue(object: Callback<ResponseModel> {
             override fun onResponse(call: Call<ResponseModel>, response: Response<ResponseModel>) {
@@ -117,8 +118,8 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
                         //The layout manager is required to display the data listed on the screen.
                         layoutManager= LinearLayoutManager(context)
                         binding.gamesRecyclerview.layoutManager = LinearLayoutManager(context)
-                        //the list is cleared for the first page because it has no previous page
                         if(pageIndex.equals(1)){
+                            //the list is cleared for the first page because it has no previous page
                             mutableAllGameList.clear()
                             //If response body is not null add all results in mutableAllGamelist
                             response.body()?.let { mutableAllGameList.addAll(it.results) }
@@ -139,7 +140,6 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
                     }
                 }
             }
-
             override fun onFailure(call: Call<ResponseModel>, t:Throwable) {
                 binding.loadingLayout.isVisible = false;
                 t.printStackTrace()
@@ -147,12 +147,10 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
             }
         })
     }
-
     override fun onGameClickListener(gameId : Int) {
         //taking the id of the clicked game in the list and directing it to the detail fragment
         val bundle = Bundle()
         bundle.putInt("gameId",gameId)
         view?.findNavController()?.navigate(R.id.action_games_dest_to_gameDetailFragment,bundle)
-
     }
 }

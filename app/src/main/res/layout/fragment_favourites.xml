@@ -16,7 +16,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="9dp"
             android:layout_alignParentBottom="true"
-            android:text="@string/favourites_dest"
+            android:text="@string/favourites_top"
             android:textSize="30dp"
             android:textStyle="bold"
             android:textColor="@color/black"></TextView>

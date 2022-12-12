@@ -1,5 +1,6 @@
 package com.sena.mygamesapp.Activities
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -17,9 +18,10 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         //Defining a navController to be able to use the navigation component
         setupBottomNavMenu(navController)
+
     }
     private fun setupBottomNavMenu(navController: NavController) {
-        //Setting BottomNvigationView
+        //Setting BottomNavigationView
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNav?.setupWithNavController(navController)
     }
