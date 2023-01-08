@@ -3,15 +3,24 @@ package com.sena.mygamesapp.Fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.text.HtmlCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.sena.mygamesapp.AppConstants.Constants
-import com.sena.mygamesapp.Retrofit.ApiClient
 import com.sena.mygamesapp.Interfaces.ApiInterface
 import com.sena.mygamesapp.Models.GameDetailModel
 import com.sena.mygamesapp.R
+import com.sena.mygamesapp.Retrofit.ApiClient
+import com.sena.mygamesapp.RoomDatabase.FavGameDatabase
+import com.sena.mygamesapp.RoomDatabase.GameDao
 import com.sena.mygamesapp.databinding.FragmentGameDetailBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,7 +30,7 @@ class GameDetailFragment : Fragment(R.layout.fragment_game_detail) {
     private val binding get() = _binding!!
     //initially assigning the number of clicks to 0
     private var clickNo = 0
-
+    private lateinit var gameDao: GameDao
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -44,6 +53,19 @@ class GameDetailFragment : Fragment(R.layout.fragment_game_detail) {
             requireActivity().onBackPressed()
             //Clicking on Games returns to gamesFragment back
         }
+        val favDb = Room.databaseBuilder(
+            requireContext(),
+            FavGameDatabase::class.java, "game_database"
+        ).build()
+        gameDao = favDb.gameDao()
+        lifecycleScope.launch(Dispatchers.IO) {
+            val gameList = gameDao.getItemById(gameId!!)
+            if(!gameList!!.isEmpty()){
+                requireActivity().runOnUiThread {
+                    binding.favTopText.isVisible = true
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -51,8 +73,6 @@ class GameDetailFragment : Fragment(R.layout.fragment_game_detail) {
         super.onDestroyView()
         _binding = null
     }
-
-
 
     fun getGameDetail(gameId:Int){
         val serviceGenerator = ApiClient.buildService(ApiInterface::class.java)
@@ -72,6 +92,16 @@ class GameDetailFragment : Fragment(R.layout.fragment_game_detail) {
                     }
                     //set game name above game picture
                     binding.gameName.setText(gameDetailResponse.name)
+                    binding.websiteLayout.setOnClickListener{
+                        val bundle = Bundle()
+                        bundle.putString("url",gameDetailResponse.website)
+                        view?.findNavController()?.navigate(R.id.webViewFragment,bundle)
+                    }
+                    binding.redditLayout.setOnClickListener{
+                        val bundle = Bundle()
+                        bundle.putString("url",gameDetailResponse.reddit_url)
+                        view?.findNavController()?.navigate(R.id.webViewFragment,bundle)
+                    }
                 }
             }
 

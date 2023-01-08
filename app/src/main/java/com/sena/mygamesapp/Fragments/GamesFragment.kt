@@ -7,18 +7,28 @@ import android.view.View
 import android.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
+import com.google.android.material.snackbar.Snackbar
 import com.sena.mygamesapp.Adapters.GamesAdapter
 import com.sena.mygamesapp.AppConstants.Constants
 import com.sena.mygamesapp.Retrofit.ApiClient
 import com.sena.mygamesapp.Interfaces.ApiInterface
 import com.sena.mygamesapp.Interfaces.GameClickListener
 import com.sena.mygamesapp.Models.GameModel
+import com.sena.mygamesapp.Models.GenreModel
 import com.sena.mygamesapp.Models.ResponseModel
 import com.sena.mygamesapp.R
+import com.sena.mygamesapp.RoomDatabase.*
 import com.sena.mygamesapp.databinding.FragmentGamesBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,11 +40,23 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
     val mutableAllGameList = mutableListOf<GameModel>()
     var searchText = ""
     var adapter: GamesAdapter? = null
-
+    private lateinit var gameDao: GameDao
+    private lateinit var viewedGameDao: ViewedGameDao
+    var allViewedGames = mutableListOf<ViewedGameModel>()
     //To set up an instance of the binding class for use with an activity, perform the following steps in the activity's onCreate() method
     //called to do initial creation of the fragment.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val favDb = Room.databaseBuilder(
+            requireContext(),
+            FavGameDatabase::class.java, "game_database"
+        ).build()
+        val viewDb = Room.databaseBuilder(
+            requireContext(),
+            ViewedGameDatabase::class.java, "viewed_game_database"
+        ).build()
+        gameDao = favDb.gameDao()
+        viewedGameDao = viewDb.viewedGameDao()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
@@ -123,7 +145,31 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
                             mutableAllGameList.clear()
                             //If response body is not null add all results in mutableAllGamelist
                             response.body()?.let { mutableAllGameList.addAll(it.results) }
-                            adapter= GamesAdapter(context, mutableAllGameList,this@GamesFragment)
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                val games = viewedGameDao.getAllGames()
+                                allViewedGames.addAll(games)
+                                MainScope().launch {
+                                    withContext(Dispatchers.Default) {
+                                    }
+                                    adapter!!.notifyDataSetChanged()
+                                }
+                            }
+                            adapter= GamesAdapter(context, mutableAllGameList,allViewedGames,this@GamesFragment)
+                            ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+                                override fun onMove(
+                                    recyclerView: RecyclerView,
+                                    viewHolder: RecyclerView.ViewHolder,
+                                    target: RecyclerView.ViewHolder
+                                ): Boolean {
+                                    return false
+                                }
+                                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                                    val favGame: GameModel = mutableAllGameList.get(viewHolder.adapterPosition)
+                                    adapter!!.notifyDataSetChanged()
+                                    addGameToFav(FavGameModel(0,favGame.id,favGame.name,favGame.backgroundImage,favGame.metacritic,getFormattedGenres(favGame.genres)))
+                                    Snackbar.make(binding.gamesRecyclerview, favGame.name + " game added to favourites", Snackbar.LENGTH_LONG).show()
+                                }
+                            }).attachToRecyclerView(binding.gamesRecyclerview)
 
                         } else if(state != null){
                             //If the page is not 1, the list containing the previous games is not clear.
@@ -147,10 +193,35 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
             }
         })
     }
-    override fun onGameClickListener(gameId : Int) {
+    override fun onGameClickListener(game : GameModel) {
         //taking the id of the clicked game in the list and directing it to the detail fragment
         val bundle = Bundle()
-        bundle.putInt("gameId",gameId)
-        view?.findNavController()?.navigate(R.id.action_games_dest_to_gameDetailFragment,bundle)
+        bundle.putInt("gameId",game.id)
+        //val favouriteGame = FavouriteGame(0,game.id,game.name,game.backgroundImage,game.metacritic,getFormattedGenres(game.genres))
+        val viewedGameModel = ViewedGameModel(0,game.id,game.name,game.backgroundImage,game.metacritic,getFormattedGenres(game.genres))
+        addGameToViewedGames(viewedGameModel)
+        view?.findNavController()?.navigate(R.id.gameDetailFragment,bundle)
+    }
+    private fun addGameToFav(game:FavGameModel){
+        lifecycleScope.launch(Dispatchers.IO) {
+            gameDao.insertIfNotExists(game)
+        }
+    }
+    private fun addGameToViewedGames(game:ViewedGameModel){
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewedGameDao.insertIfNotExists(game)
+        }
+    }
+    private fun getFormattedGenres(genreList : ArrayList<GenreModel>) : String{
+        var formattedGenreListTxt = ""
+        //Assign the elements in the genre list to a string variable, separated by commas
+        for(i in 0 until genreList.size){
+            if(i.equals(0))
+                formattedGenreListTxt = formattedGenreListTxt + genreList.get(i).name
+            else{
+                formattedGenreListTxt = formattedGenreListTxt + ", " + genreList.get(i).name.lowercase()
+            }
+        }
+        return formattedGenreListTxt
     }
 }

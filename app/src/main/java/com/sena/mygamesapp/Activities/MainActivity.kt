@@ -23,7 +23,21 @@ class MainActivity : AppCompatActivity() {
     private fun setupBottomNavMenu(navController: NavController) {
         //Setting BottomNavigationView
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        bottomNav?.setupWithNavController(navController)
+        bottomNav.setOnItemSelectedListener{
+            when (it.itemId) {
+                R.id.games_dest -> {
+                    navController.popBackStack(R.id.navigation,true)
+                    navController.navigate(R.id.games_dest)
+                    return@setOnItemSelectedListener true
+                }
+                R.id.favourites_dest -> {
+                    navController.popBackStack(R.id.navigation,true)
+                    navController.navigate(R.id.favourites_dest)
+                    return@setOnItemSelectedListener true
+                }
+            }
+            false
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

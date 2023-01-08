@@ -9,7 +9,8 @@
         android:id="@+id/topLayout"
         android:layout_marginTop="0dp"
         android:layout_width="match_parent"
-        android:layout_height="122dp">
+        android:layout_height="122dp"
+        android:background="@color/top_color">
 
         <TextView
             android:id="@+id/fragment_title"
@@ -40,7 +41,8 @@
         android:orientation="vertical"
         android:layout_below="@id/topLayout"
         app:layout_constraintVertical_bias="0.022"
-        tools:context=".MainActivity">
+        tools:context=".MainActivity"
+        android:background="@color/top_color">
 
         <View
             android:layout_width="match_parent"
@@ -70,11 +72,12 @@
             android:layout_height="1dp"
             android:background="@color/backgroundColor"/>
     </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/games_recyclerview"
-        android:layout_below="@id/linearLayout5"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/linearLayout5" />
 
     <LinearLayout
        android:id="@+id/noSearchLayout"
@@ -111,7 +114,10 @@
             android:layout_gravity="center"
             android:translationZ="90dp"
             android:id="@+id/progressBar"
-            android:visibility="visible"/>
+            android:visibility="visible"
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/bottom_blue"/>
     </FrameLayout>
 
 </RelativeLayout>

@@ -5,6 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="136dp">
     <LinearLayout
+        android:id="@+id/game_row_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
         android:id="@+id/game_row"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -74,6 +78,7 @@
                     android:textSize="18dp"
                     android:textColor="@color/red"
                     android:textStyle="bold"></TextView>
+
                 <TextView
                     android:id="@+id/textViewGenres"
                     android:layout_width="wrap_content"
@@ -81,9 +86,10 @@
                     android:layout_alignParentBottom="true"
                     android:fontFamily="@font/sfprotext"
                     android:lineHeight="25dp"
-                    android:textSize="14dp"
-                    android:text="Action, puzzle"></TextView>
+                    android:text="Action, puzzle"
+                    android:textSize="14dp"></TextView>
             </RelativeLayout>
         </LinearLayout>
+    </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

@@ -3,14 +3,17 @@ package com.sena.mygamesapp.Adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.sena.mygamesapp.Interfaces.GameClickListener
 import com.sena.mygamesapp.Models.GameModel
+import com.sena.mygamesapp.R
+import com.sena.mygamesapp.RoomDatabase.ViewedGameModel
 import com.sena.mygamesapp.databinding.RowGameBinding
 //GamesAdapter to provide a data flow between the design and the model.
-class GamesAdapter(var context: Context, var gameList: MutableList<GameModel>,private val gameClickListener: GameClickListener) :
+class GamesAdapter(var context: Context, var gameList: MutableList<GameModel>, var viewedGameList:MutableList<ViewedGameModel> ,private val gameClickListener: GameClickListener) :
     RecyclerView.Adapter<GamesAdapter.GamesViewHolder>() //connecting games data to RecyclerView via adapter
    {
        //Import 3 main methods of RecyclerView
@@ -40,14 +43,28 @@ class GamesAdapter(var context: Context, var gameList: MutableList<GameModel>,pr
                  genreListTxt = genreListTxt + ", " + genreList.get(i).name.lowercase()
              }
          }
+         if(hasGameViewedBefore(game)){
+             holder.viewBinding.gameRowLayout.setBackgroundColor(ContextCompat.getColor(context,R.color.backgroundColor))
+         } else{
+             holder.viewBinding.gameRowLayout.setBackgroundColor(ContextCompat.getColor(context,R.color.white))
+         }
          holder.viewBinding.textViewGenres.setText(genreListTxt)
          //Redirecting the clicked element in the game list to the detail page by id
          holder.viewBinding.gameRow.setOnClickListener{
-             gameClickListener.onGameClickListener(game.id)
+             gameClickListener.onGameClickListener(game)
          }
     }
 
-    inner class GamesViewHolder(var viewBinding: RowGameBinding) : RecyclerView.ViewHolder(viewBinding.root) {
+       fun hasGameViewedBefore(game : GameModel) : Boolean{
+           for(i in 0 until viewedGameList.size){
+               if(game.name.equals(viewedGameList.get(i).name)){
+                   return true
+               }
+           }
+           return false
+       }
+
+       inner class GamesViewHolder(var viewBinding: RowGameBinding) : RecyclerView.ViewHolder(viewBinding.root) {
     }
 
     override fun getItemCount(): Int {

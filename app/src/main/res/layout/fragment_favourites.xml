@@ -4,33 +4,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragments.GamesFragment">
+
     <RelativeLayout
         android:id="@+id/topLayout"
-        android:layout_marginTop="0dp"
         android:layout_width="match_parent"
-        android:layout_height="122dp">
+        android:layout_height="122dp"
+        android:layout_marginTop="0dp"
+        android:background="@color/top_color">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="9dp"
-            android:layout_alignParentBottom="true"
             android:text="@string/favourites_top"
+            android:textColor="@color/black"
             android:textSize="30dp"
-            android:textStyle="bold"
-            android:textColor="@color/black"></TextView>
+            android:textStyle="bold"></TextView>
     </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/games_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/topLayout"
+        android:visibility="gone"
+        tools:listitem="@layout/row_game" />
     <LinearLayout
+        android:id="@+id/no_fav_games"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/backgroundColor"
+        android:visibility="visible"
         android:layout_below="@id/topLayout">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sfprodisplay"
-            android:text="There is no favourites found"
+            android:text="@string/no_fav"
             android:layout_marginTop="36dp"
             android:gravity="center"
             android:textSize="18dp"

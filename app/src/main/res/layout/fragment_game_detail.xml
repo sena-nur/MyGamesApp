@@ -37,6 +37,7 @@
                         android:textSize="17dp"
                         android:lineHeight="22dp"></TextView>
                     <TextView
+                        android:id="@+id/favTopText"
                         android:layout_width="match_parent"
                         android:layout_height="44dp"
                         android:layout_marginRight="16dp"
@@ -47,15 +48,17 @@
                         android:textColor="@color/blue"
                         android:textStyle="bold"
                         android:textSize="17dp"
-                        android:lineHeight="22dp"></TextView>
+                        android:lineHeight="22dp"
+                        android:visibility="invisible"></TextView>
                 </LinearLayout>
+
                 <ImageView
                     android:id="@+id/gameImage"
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="291dp"
-                    android:scaleType="fitXY"
-                    android:layout_below="@id/topWhite"></ImageView>
+                    android:layout_below="@id/topWhite"
+                    android:layout_marginTop="10dp"
+                    android:scaleType="fitXY"></ImageView>
                 <TextView
                     android:id="@+id/gameName"
                     android:layout_width="match_parent"
@@ -102,6 +105,7 @@
                 android:layout_marginRight="16dp"
                 android:background="@android:color/darker_gray"/>
             <LinearLayout
+                android:id="@+id/redditLayout"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginLeft="16dp"
@@ -124,6 +128,7 @@
                 android:layout_marginRight="16dp"
                 android:background="@android:color/darker_gray"/>
             <LinearLayout
+                android:id="@+id/websiteLayout"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginLeft="16dp"

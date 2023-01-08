@@ -8,6 +8,8 @@ data class GameDetailModel(@SerializedName("id") val id: Int,
                            @SerializedName("description") val description: String,
                            @SerializedName("reddit_url") val reddit_url: String,
                            @SerializedName("website") val website: String,
-                           @SerializedName("background_image") val background_image: String)
+                           @SerializedName("background_image") val background_image: String,
+                           @SerializedName("genres") val genres: ArrayList<GenreModel>,
+                           @SerializedName("metacritic") val metacritic: Int)
 
 
