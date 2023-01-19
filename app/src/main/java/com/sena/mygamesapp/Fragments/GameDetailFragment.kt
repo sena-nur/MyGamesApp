@@ -1,5 +1,7 @@
 package com.sena.mygamesapp.Fragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -93,14 +95,14 @@ class GameDetailFragment : Fragment(R.layout.fragment_game_detail) {
                     //set game name above game picture
                     binding.gameName.setText(gameDetailResponse.name)
                     binding.websiteLayout.setOnClickListener{
-                        val bundle = Bundle()
-                        bundle.putString("url",gameDetailResponse.website)
-                        view?.findNavController()?.navigate(R.id.webViewFragment,bundle)
+                        val openURL = Intent(Intent.ACTION_VIEW)
+                        openURL.data = Uri.parse(gameDetailResponse.website)
+                        startActivity(openURL)
                     }
                     binding.redditLayout.setOnClickListener{
-                        val bundle = Bundle()
-                        bundle.putString("url",gameDetailResponse.reddit_url)
-                        view?.findNavController()?.navigate(R.id.webViewFragment,bundle)
+                        val openURL = Intent(Intent.ACTION_VIEW)
+                        openURL.data = Uri.parse(gameDetailResponse.reddit_url)
+                        startActivity(openURL)
                     }
                 }
             }

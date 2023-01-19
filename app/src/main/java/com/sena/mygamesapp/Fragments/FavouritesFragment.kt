@@ -1,7 +1,9 @@
 package com.sena.mygamesapp.Fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -48,9 +50,18 @@ class FavouritesFragment : Fragment(R.layout.fragment_favourites), FavGameClickL
         _binding = null
     }
     private fun getAllFavGames(){
+
         lifecycleScope.launch(Dispatchers.IO) {
             val games = gameDao.getAllGames()
+            setFragmentTitle(games.size)
             populateFavList(games)
+        }
+    }
+    fun setFragmentTitle(gameCount : Int){
+        if(gameCount==0){
+            binding.favGamesTitle.setText(getString(R.string.favourites_top))
+        } else{
+            binding.favGamesTitle.setText(getString(R.string.favourites_top) + "(" + gameCount + ")")
         }
     }
     fun populateFavList(games : List<FavGameModel>){
@@ -74,8 +85,8 @@ class FavouritesFragment : Fragment(R.layout.fragment_favourites), FavGameClickL
                         }
                         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                             val favGame: FavGameModel = games.get(viewHolder.adapterPosition)
-                            deleteGameFromFav(favGame)
-                            Snackbar.make(binding.gamesRecyclerview, favGame.name + " removed from favourites", Snackbar.LENGTH_LONG).show()
+                            showDeleteDialog(favGame)
+
                         }
                     }).attachToRecyclerView(binding.gamesRecyclerview)
                     binding.noFavGames.isVisible = false
@@ -89,12 +100,26 @@ class FavouritesFragment : Fragment(R.layout.fragment_favourites), FavGameClickL
 
         }
     }
+    private fun showDeleteDialog(game: FavGameModel){
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle(R.string.sure_to_delete_title)
+        builder.setMessage(R.string.sure_to_delete_game)
+        builder.setPositiveButton(R.string.yes) { dialog, which ->
+            deleteGameFromFav(game)
+        }
+        builder.setNegativeButton(R.string.no) { dialog, which ->
+            Toast.makeText(context,R.string.delete_cancelled, Toast.LENGTH_SHORT).show()
+            getAllFavGames()
+        }
+        builder.show()
+    }
     private fun deleteGameFromFav(game:FavGameModel){
         lifecycleScope.launch(Dispatchers.IO) {
-            val remove = gameDao.deleteGame(game)
+            val remove = gameDao.deleteById(game.id)
             if(remove == 1){
-                getAllFavGames()
+                Snackbar.make(binding.gamesRecyclerview, game.name + " removed from favourites", Snackbar.LENGTH_LONG).show()
             }
+            getAllFavGames()
         }
     }
     override fun onFavGameClickListener(id : Int) {

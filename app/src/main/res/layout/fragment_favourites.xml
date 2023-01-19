@@ -13,6 +13,7 @@
         android:background="@color/top_color">
 
         <TextView
+            android:id="@+id/fav_games_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -50,4 +51,24 @@
             android:textColor="@color/black"
             android:textStyle="bold"></TextView>
     </LinearLayout>
+    <FrameLayout
+        android:id="@+id/loadingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="#85000000"
+        android:visibility="gone">
+        <ProgressBar
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:translationZ="90dp"
+            android:id="@+id/progressBar"
+            android:visibility="visible"
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/bottom_blue"/>
+    </FrameLayout>
 </RelativeLayout>

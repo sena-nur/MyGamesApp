@@ -1,10 +1,16 @@
 package com.sena.mygamesapp.Adapters
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.sena.mygamesapp.Interfaces.FavGameClickListener
 import com.sena.mygamesapp.Interfaces.GameClickListener
 import com.sena.mygamesapp.RoomDatabase.FavGameModel
@@ -28,6 +34,17 @@ class FavGamesAdapter(var context: Context, var gameList: List<FavGameModel>, pr
         if(game.background_image !== null){
             Glide.with(context)  //Library to place the image link from the api inside imageViewGame
                 .load(game.background_image)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                        return true
+                    }
+                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                        holder.viewBinding.imageLayout.isVisible = true
+                        holder.viewBinding.loadingLayout.isVisible = false
+                        //do something when picture already loaded
+                        return false
+                    }
+                })
                 .into(holder.viewBinding.imageViewGame)
         }
         val genreList = game.genres

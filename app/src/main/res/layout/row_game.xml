@@ -15,10 +15,31 @@
         android:layout_margin="16dp"
         android:orientation="horizontal"
         android:weightSum="17">
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/loadingLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_weight="11">
+            <ProgressBar
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:translationZ="90dp"
+                android:id="@+id/progressBar"
+                android:visibility="visible"
+                android:indeterminate="true"
+                android:indeterminateTintMode="src_atop"
+                android:indeterminateTint="@color/bottom_blue"/>
+        </FrameLayout>
+        <LinearLayout
+            android:id="@+id/imageLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="11"
+            android:visibility="gone">
             <ImageView
                 android:id="@+id/imageViewGame"
                 android:layout_width="120dp"

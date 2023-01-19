@@ -19,6 +19,9 @@ interface GameDao {
     @Delete
     fun deleteGame(game: FavGameModel) : Int
 
+    @Query("DELETE FROM games_table WHERE id = :id")
+    fun deleteById(id:Int): Int
+
     fun insertIfNotExists(game: FavGameModel){
         val favGames = getItemById(game.id)
         if(favGames!!.isEmpty()){
