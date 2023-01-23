@@ -14,6 +14,7 @@ interface ViewedGameDao {
     fun getItemById(id: Int): MutableList<ViewedGameModel?>?
 
     fun insertIfNotExists(game: ViewedGameModel){
+        //inserts the game if the game has not been viewed before
         val viewedGames = getItemById(game.id)
         if(viewedGames!!.isEmpty()){
             insertGame(game)

@@ -22,10 +22,15 @@ interface GameDao {
     @Query("DELETE FROM games_table WHERE id = :id")
     fun deleteById(id:Int): Int
 
-    fun insertIfNotExists(game: FavGameModel){
+    fun insertIfNotExists(game: FavGameModel) : Boolean{
+        //If the game has not been added to favorites before, the insert operation is performed,
+        // if it is added, it returns false.
         val favGames = getItemById(game.id)
         if(favGames!!.isEmpty()){
             insertGame(game)
+            return true
+        } else{
+            return false
         }
     }
 }

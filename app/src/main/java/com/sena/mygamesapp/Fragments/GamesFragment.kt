@@ -1,10 +1,13 @@
 package com.sena.mygamesapp.Fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.Parcelable
 import android.util.Log
 import android.view.View
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -51,6 +54,7 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
             requireContext(),
             FavGameDatabase::class.java, "game_database"
         ).build()
+        // build the database where we keep the viewed games
         val viewDb = Room.databaseBuilder(
             requireContext(),
             ViewedGameDatabase::class.java, "viewed_game_database"
@@ -145,6 +149,7 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
                             mutableAllGameList.clear()
                             //If response body is not null add all results in mutableAllGamelist
                             response.body()?.let { mutableAllGameList.addAll(it.results) }
+
                             lifecycleScope.launch(Dispatchers.IO) {
                                 val games = viewedGameDao.getAllGames()
                                 allViewedGames.addAll(games)
@@ -163,11 +168,12 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
                                 ): Boolean {
                                     return false
                                 }
+                                //
                                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                                     val favGame: GameModel = mutableAllGameList.get(viewHolder.adapterPosition)
                                     adapter!!.notifyDataSetChanged()
+                                    //add game to favorites when swipe right in all games list
                                     addGameToFav(FavGameModel(0,favGame.id,favGame.name,favGame.backgroundImage,favGame.metacritic,getFormattedGenres(favGame.genres)))
-                                    Snackbar.make(binding.gamesRecyclerview, favGame.name + " game added to favourites", Snackbar.LENGTH_LONG).show()
                                 }
                             }).attachToRecyclerView(binding.gamesRecyclerview)
 
@@ -203,8 +209,16 @@ class GamesFragment : Fragment(R.layout.fragment_games), GameClickListener {
         view?.findNavController()?.navigate(R.id.gameDetailFragment,bundle)
     }
     private fun addGameToFav(game:FavGameModel){
+        // realization of adding to favorites in the database
         lifecycleScope.launch(Dispatchers.IO) {
-            gameDao.insertIfNotExists(game)
+            val insert = gameDao.insertIfNotExists(game)
+            if(insert){
+                Snackbar.make(binding.gamesRecyclerview, game.name + " game added to favourites", Snackbar.LENGTH_LONG).show()
+            } else{
+                Handler(Looper.getMainLooper()).post {
+                    Toast.makeText(context,getString(R.string.game_already_added_fav),Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
     private fun addGameToViewedGames(game:ViewedGameModel){

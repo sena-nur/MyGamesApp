@@ -12,7 +12,6 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.sena.mygamesapp.Interfaces.FavGameClickListener
-import com.sena.mygamesapp.Interfaces.GameClickListener
 import com.sena.mygamesapp.RoomDatabase.FavGameModel
 import com.sena.mygamesapp.databinding.RowGameBinding
 //GamesAdapter to provide a data flow between the design and the model.

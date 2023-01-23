@@ -5,12 +5,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.sena.mygamesapp.AppConstants.Constants
@@ -56,11 +54,14 @@ class GameDetailFragment : Fragment(R.layout.fragment_game_detail) {
             //Clicking on Games returns to gamesFragment back
         }
         val favDb = Room.databaseBuilder(
+            // Build the room database where the favorite games are kept
             requireContext(),
             FavGameDatabase::class.java, "game_database"
         ).build()
         gameDao = favDb.gameDao()
         lifecycleScope.launch(Dispatchers.IO) {
+            //By taking the id of the game, a query is made according to this id in the list of favorite games.
+            // If the list is not empty, the favorite text in the upper right becomes visible.
             val gameList = gameDao.getItemById(gameId!!)
             if(!gameList!!.isEmpty()){
                 requireActivity().runOnUiThread {
@@ -94,11 +95,13 @@ class GameDetailFragment : Fragment(R.layout.fragment_game_detail) {
                     }
                     //set game name above game picture
                     binding.gameName.setText(gameDetailResponse.name)
+                    //show the website of the game in the browser when clicked
                     binding.websiteLayout.setOnClickListener{
                         val openURL = Intent(Intent.ACTION_VIEW)
                         openURL.data = Uri.parse(gameDetailResponse.website)
                         startActivity(openURL)
                     }
+                    //show the game's reddit link in the browser when clicked
                     binding.redditLayout.setOnClickListener{
                         val openURL = Intent(Intent.ACTION_VIEW)
                         openURL.data = Uri.parse(gameDetailResponse.reddit_url)

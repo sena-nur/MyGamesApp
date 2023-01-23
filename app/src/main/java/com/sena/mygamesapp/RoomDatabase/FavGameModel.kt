@@ -3,8 +3,6 @@ package com.sena.mygamesapp.RoomDatabase
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
-import com.sena.mygamesapp.Models.GenreModel
 
 @Entity(tableName = "games_table")
 data class FavGameModel(

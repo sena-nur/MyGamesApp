@@ -63,7 +63,7 @@
             android:background="@drawable/searchview_background"
             android:backgroundTint="#1F8E8E93"
             android:iconifiedByDefault="false"
-            android:queryHint="Search for the games"
+            android:queryHint="@string/game_query"
             android:searchIcon="@drawable/search_icon"
             android:queryBackground="@null">
         </android.widget.SearchView>
@@ -95,7 +95,7 @@
             android:textStyle="bold"
             android:letterSpacing="0.038"
             android:textColor="@color/black"
-            android:text="No games has been searched."
+            android:text="@string/no_games"
             android:textSize="18dp"></TextView>
     </LinearLayout>
 

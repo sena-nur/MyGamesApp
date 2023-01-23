@@ -71,6 +71,7 @@ class GamesAdapter(var context: Context, var gameList: MutableList<GameModel>, v
          }
     }
 
+       //Returns whether the game has been viewed before
        fun hasGameViewedBefore(game : GameModel) : Boolean{
            for(i in 0 until viewedGameList.size){
                if(game.name.equals(viewedGameList.get(i).name)){

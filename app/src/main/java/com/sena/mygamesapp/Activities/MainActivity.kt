@@ -1,13 +1,11 @@
 package com.sena.mygamesapp.Activities
 
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sena.mygamesapp.R
 
@@ -26,11 +24,14 @@ class MainActivity : AppCompatActivity() {
         bottomNav.setOnItemSelectedListener{
             when (it.itemId) {
                 R.id.games_dest -> {
+                    //Redirects to fragment where all games are listed
                     navController.popBackStack(R.id.navigation,true)
                     navController.navigate(R.id.games_dest)
                     return@setOnItemSelectedListener true
                 }
                 R.id.favourites_dest -> {
+
+                    //Redirects to fragment where favorite games are listed
                     navController.popBackStack(R.id.navigation,true)
                     navController.navigate(R.id.favourites_dest)
                     return@setOnItemSelectedListener true
